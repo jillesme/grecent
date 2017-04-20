@@ -35,7 +35,7 @@ function getRecentBranches() {
 
 function listBranches([current, allBranches]) {
   const branchRegex = /refs\/heads\/(.+$)/gi;
-  return allBranches
+  const branchList = allBranches
     .split('\n')
     .slice(0, -1)
     .map((line, i) => {
@@ -43,6 +43,12 @@ function listBranches([current, allBranches]) {
       return line.match(branchRegex)[0].substr(11);
     })
     .filter(branch => branch !== trim(current));
+
+  if (!branchList.length) {
+    console.log('There\'s only one branch in this repository');
+    return process.exit(1);
+  }
+  return branchList;
 }
 
 function promptUser(branches) {
