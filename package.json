@@ -1,0 +1,14 @@
+{
+  "name": "grecent",
+  "version": "1.0.0",
+  "description": "Recent branch switcher for git",
+  "main": "bin.js",
+  "author": "Jilles Soeters",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "3.0.6"
+  },
+  "bin": {
+    "grecent": "bin/grecent.js"
+  }
+}
