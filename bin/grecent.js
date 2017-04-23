@@ -1,6 +1,10 @@
 #! /usr/bin/env node
 const exec = require('child_process').exec;
 const inquirer = require('inquirer');
+const fuzzy = require('fuzzy');
+const autocomplete = require('inquirer-autocomplete-prompt');
+
+inquirer.registerPrompt('autocomplete', autocomplete);
 
 function trim(str) {
   return str.replace(/\s/g, '');
@@ -51,14 +55,20 @@ function listBranches([current, allBranches]) {
   return branchList;
 }
 
+function filterBranches(input, branches) {
+  input = input || '';
+  const searchResult = fuzzy.filter(input, branches);
+  return searchResult.map(el => el.original);
+}
+
 function promptUser(branches) {
-  return inquirer.prompt({
-    type: 'list',
-    message: 'Choose branch:',
+  return inquirer.prompt([{
+    type: 'autocomplete',
     name: 'branch',
+    message: 'Choose branch:',
+    source: (answers, input) => Promise.resolve().then(() => filterBranches(input, branches)),
     pageSize: branches.length > 10 ? 10 : branches.length,
-    choices: branches
-  });
+  }]);
 }
 
 function switchBranch({ branch }) {
