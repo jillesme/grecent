@@ -7,3 +7,8 @@ The interactive branch switcher. It sorts your local branches by local commit an
 ### Install 
 
 Just run `npm i grecent -g` and start using `grecent` from any git repository :)
+
+### Roadmap
+
+1) Integrate babel to publish the package so it's usable for older node versions
+2) Write unit tests and set up Travis / CircleCI
