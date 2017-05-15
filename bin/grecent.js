@@ -16,7 +16,7 @@ function run(cmd) {
       if (!err && !stderr) {
         resolve(stdout);
       } else {
-        reject(err, stderr);
+        reject({ err, stderr });
       }
     })
   });
@@ -72,11 +72,13 @@ function promptUser(branches) {
 }
 
 function switchBranch({ branch }) {
-  exec('git checkout ' + branch);
+  return run('git checkout ' + branch).catch(({ stderr }) => {
+    console.log(stderr)
+  });
 }
 
 Promise.all([getCurrentBranch(), getRecentBranches()])
   .then(listBranches)
   .then(promptUser)
-  .then(({ branch }) => exec(`git checkout ${branch}`));
+  .then(switchBranch);
 
